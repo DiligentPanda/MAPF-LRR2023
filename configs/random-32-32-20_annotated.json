@@ -1,0 +1,245 @@
+{
+    "lifelong_solver_name": [ # the solver to use 
+        {
+            "n_agents": 600, # if n_agents<=600, use LNS
+            "value": "LNS"
+        },
+        {
+            "n_agents": 1000000, # if n_agents>600 and <1000000, use LaCAM2
+            "value": "LaCAM2"
+        }
+    ],
+    "map_weights_path": [  # map weights to use, "" means use the default map weights, which are cost 1 for any movement
+        {
+            "n_agents": 100, # if n_agents<=100, use the default map weights
+            "value": ""
+        },
+        {
+            "n_agents": 200, # if n_agents>100 and <=200, ...
+            "value": "scripts/random_weight_101.w"
+        },
+        {
+            "n_agents": 500, # if n_agents>200 and <=500, ...
+            "value": "scripts/random_weight_040.w"
+        },
+        {
+            "n_agents": 600,
+            "value": "scripts/random_weight_050.w"
+        },
+        {
+            "n_agents": 1000000,
+            "value": "scripts/random_800_uncompressed_weights_with_wait_5000_steps.w"
+        }
+    ],
+    "max_execution_steps": [  # the algorithm will stop after this many steps
+        {
+            "n_agents": 400,
+            "value": 1000000
+        },
+        {
+            "n_agents": 600,
+            "value": 1000000
+        },
+        {
+            "n_agents": 1000000,
+            "value": 1000000
+        }
+    ],
+    "max_task_completed": [ # the algorithm will stop after this many tasks are completed
+        {
+            "n_agents": 400,
+            "value": 1000000
+        },
+        {
+            "n_agents": 600,
+            "value": 1000000
+        },
+        {
+            "n_agents": 1000000,
+            "value": 1000000
+        }
+    ],
+    "max_agents_in_use": [ # the max agents to use, others will be disabled in a way that their goal are set to the current locations and their priorities to the lowerest.
+        {
+            "n_agents": 400,
+            "value": -1
+        },
+        {
+            "n_agents": 600,
+            "value": -1
+        },
+        {
+            "n_agents": 1000000,
+            "value": -1
+        }
+    ],
+    "disable_corner_target_agents": [ # disable agents whose goals are at the corners, which easily causes deadlocks.
+        {
+            "n_agents": 400,
+            "value": false
+        },
+        {
+            "n_agents": 1000000,
+            "value": true
+        }
+    ],
+    "LNS": { # hyperparameters for the LNS algorithm
+        "seed": 0, # random seed
+        "cutoffTime": 0.95, # the time limit to stop search in seconds
+        "screen": 0, # useless
+        "initAlgo": "LaCAM2", # the initial algorithm used to find an initial solution, only LaCAM2 is supported. but it is acutally PIBT.
+        "replanAlgo": "PP", # the algorithm used to replan paths, only prioritized planning (PP) is supported.
+        "destoryStrategy": "Adaptive", # see LNS paper
+        "neighborSize": 8, # see LNS paper, the number of agents in a neighborhood to replan paths togather.
+        "maxIterations": 10000000, # uselss
+        "initLNS": false, # useless
+        "initDestoryStrategy": "Adaptive",  # see LNS paper
+        "sipp": true, # useless, we actually use A* algorithm not SIPP
+        "pibtWindow": 5, # useless
+        "winPibtSoftmode": true, # useless
+        "window_size_for_CT": [ # just keep the following three window_sizes the same
+            {
+                "n_agents": 100, # if n_agents<=100, use window size of 20 steps
+                "value": 20
+            },
+            {
+                "n_agents": 100000, # if n_agents>100 and <100000, use window size of 15 steps
+                "value": 15
+            }
+        ],
+        "window_size_for_CAT": [
+            {
+                "n_agents": 100,
+                "value": 20
+            },
+            {
+                "n_agents": 100000,
+                "value": 15
+            }
+        ],
+        "window_size_for_PATH": [
+            {
+                "n_agents": 100,
+                "value": 20
+            },
+            {
+                "n_agents": 100000,
+                "value": 15
+            }
+        ],
+        "execution_window": 1, # replan every 1 step
+        "fix_ng_bug": [ # useless
+            {
+                "n_agents": 200,
+                "value": false
+            },
+            {
+                "n_agents": 1000000,
+                "value": true
+            }
+        ],
+        "LaCAM2": { # the hyperparameters for the PIBT algorithm used to find the initial solution in LNS
+            "seed": 0,
+            "planning_window": [ # just keep it the same as the window size above
+                {
+                    "n_agents": 100,
+                    "value": 20
+                },
+                {
+                    "n_agents": 100000,
+                    "value": 15
+                }
+            ],
+            "execution_window": 1, # replan at every 1 step
+            "use_external_executor": false, # just keep it false.
+            "consider_rotation": false, # just keep it false.
+            "use_orient_in_heuristic": true, # just keep it true.
+            "use_slow_executor": false, # just keep it false.
+            "SUO": { # useless, we hope to use Space Utilitzation Optimized (SUO) algorithm but it doesn't work well.
+                "vertex_collision_cost": 1,
+                "iterations": 0,
+                "max_expanded": -1,
+                "window": 30,
+                "h_weight": 1.0
+            },
+            "order_strategy": [ # the strategy to set the priority of agents, just keep it early_time, which is the default one used in PIBT.
+                {
+                    "n_agents": 400,
+                    "value": "early_time"
+                },
+                {
+                    "n_agents": 600,
+                    "value": "early_time"
+                },
+                {
+                    "n_agents": 1000000,
+                    "value": "early_time"
+                }
+            ],
+            "disable_agent_strategy": "tabu_locs", # strategy to disable agents, just randomly sample form locations are than those listed in the tabu list (I miss use the word tabu here...).
+            "disable_agent_goals": true, # just keep it true.
+            "tabu_locs_fp": "scripts/random_600_tabu_locs.txt" # agents at these locations that should not be disabled.
+        }
+    },
+    "LaCAM2": { # hyperparameters for the PIBT algorithm (not use LNS)
+        "seed": 0,
+        "planning_window": 3, # use window size of 3 steps.
+        "execution_window": 3, # replan at every 3 steps.
+        "use_external_executor": true,  # just keep it true.
+        "consider_rotation": true,  # just keep it true.
+        "use_orient_in_heuristic": true,  # just keep it true.
+        "use_slow_executor": false,  # just keep it false.
+        "SUO": { # useless, we hope to use Space Utilitzation Optimized (SUO) algorithm but it doesn't work well.
+            "vertex_collision_cost": 1,
+            "iterations": 0,
+            "max_expanded": -1,
+            "window": 30,
+            "h_weight": 1.0
+        },
+        "order_strategy": [ # the strategy to set the priority of agents, just keep it early_time, which is the default one used in PIBT.
+            {
+                "n_agents": 400,
+                "value": "early_time"
+            },
+            {
+                "n_agents": 600,
+                "value": "early_time"
+            },
+            {
+                "n_agents": 1000000,
+                "value": "early_time"
+            }
+        ],
+        "disable_agent_strategy": "uniform", # strategy to disable agents, just randomly sample
+        "disable_agent_goals": true, # just keep it true.
+        "tabu_locs_fp": "scripts/random_600_tabu_locs.txt" # useless if the disable_aegnt_strategy is not tabu_locs
+    },
+    "PIBT": { # useless
+        "prior_type": "early_time"
+    },
+    "RHCR": { # useless
+        "planning_window": 5,
+        "solver": "PBS",
+        "single_agent_solver": "SIPP",
+        "id": false,
+        "cutoffTime": 60,
+        "seed": 0,
+        "screen": 1,
+        "lazyP": false,
+        "simulation_time": 5000,
+        "simulation_window": 1,
+        "travel_time_window": 0,
+        "potential_function": "None",
+        "potential_threshold": 0,
+        "consider_rotation": true,
+        "robust": 0,
+        "CAT": false,
+        "hold_endpoints": false,
+        "dummy_paths": false,
+        "prioritize_start": true,
+        "suboptimal_bound": 1,
+        "log": false,
+        "output": "temp.txt"
+    },
+    "analysis_output": "analysis/test.csv" # the output file to store the analysis, only will output analysis if compiled with set(DEV ON) in CMakeLists.txt 
+}
