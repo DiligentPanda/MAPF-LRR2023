@@ -1,6 +1,6 @@
 # MAPF-LRR2023
 This is the repo for the team Pikachu's solution in the [League of Robot Competition 2023](https://www.leagueofrobotrunners.org/). We come from the [ARCS Lab](https://jiaoyangli.me/people/) at Robotics Institute, CMU. Our solution won the Overall Best and Fast Mover tracks and ranked second in the Line Honours track. 
-![A Snapshot of a part of the Leaderboard](imgs/leaderboard.png)
+![A Snapshot of a part of the Leaderboard](imgs/leaderboard_pikachu.png)
 
 ## Notice
 1. [To Update] We have a related paper submitted to [SoCS 2024](https://socs24.search-conference.org/home), which discusses our solution and important challenges in the Lifelong MAPF. 
