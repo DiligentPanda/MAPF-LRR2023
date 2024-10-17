@@ -391,23 +391,35 @@ Solution Planner::solve(std::string& additional_info, int order_strategy)
     }
 
     // check explored list
-    const auto iter = EXPLORED.find(C_new);
-    if (iter != EXPLORED.end()) {
-      cout<<"found"<<endl;
-      // case found
-      rewrite(H, iter->second, H_goal, OPEN);
-      // re-insert or random-restart
-      auto H_insert = (MT != nullptr && get_random_float(MT) >= RESTART_RATE)
-                          ? iter->second
-                          : H_init;
-      if (H_goal == nullptr || H_insert->f < H_goal->f) OPEN.push(H_insert);
-    } else {
-      // insert new search node
-      const auto H_new = new HNode(
-          C_new, HT, ins, H, H->g + get_edge_cost(H->C, C_new), get_h_value(C_new), H->d + 1, order_strategy, disable_agent_goals);
-      EXPLORED[H_new->C] = H_new;
-      if (H_goal == nullptr || H_new->f < H_goal->f) OPEN.push(H_new);
-    }
+    // const auto iter = EXPLORED.find(C_new);
+    // if (iter != EXPLORED.end()) {
+    //   cout<<"iter "<<loop_cnt<<": state exists. stucked, e.g., deadlock!"<<endl; // stucked
+    //   // I explicitly fail here. We can remove EXPLORED checking if we allow deadlock, e.g., in the competition. 
+    //   // or we can considering introducing more randomness to simply avoid deadlock.
+    //   // this piece of code is used for backtracking in the LaCAM!
+    //   // case found
+    //   exit(-1); 
+    //   rewrite(H, iter->second, H_goal, OPEN);
+    //   // re-insert or random-restart
+    //   auto H_insert = (MT != nullptr && get_random_float(MT) >= RESTART_RATE)
+    //                       ? iter->second
+    //                       : H_init;
+    //   if (H_goal == nullptr || H_insert->f < H_goal->f) OPEN.push(H_insert);
+    // } else {
+    //   // insert new search node
+    //   const auto H_new = new HNode(
+    //       C_new, HT, ins, H, H->g + get_edge_cost(H->C, C_new), get_h_value(C_new), H->d + 1, order_strategy, disable_agent_goals);
+    //   EXPLORED[H_new->C] = H_new;
+    //   if (H_goal == nullptr || H_new->f < H_goal->f) OPEN.push(H_new);
+    // }
+
+    // no check explored list
+    // insert new search node
+    const auto H_new = new HNode(
+        C_new, HT, ins, H, H->g + get_edge_cost(H->C, C_new), get_h_value(C_new), H->d + 1, order_strategy, disable_agent_goals);
+    // EXPLORED[H_new->C] = H_new;
+    if (H_goal == nullptr || H_new->f < H_goal->f) OPEN.push(H_new);
+
   }
 
   // backtrack
